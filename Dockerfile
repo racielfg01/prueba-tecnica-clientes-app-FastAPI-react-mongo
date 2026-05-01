@@ -8,6 +8,7 @@ RUN npm install --legacy-peer-deps
 # Copiar código del frontend y construir
 COPY frontend/ ./
 
+ENV VITE_API_URL=/api/
 RUN npm run build
 
 
