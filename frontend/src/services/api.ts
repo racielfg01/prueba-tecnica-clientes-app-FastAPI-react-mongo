@@ -47,36 +47,36 @@ api.interceptors.response.use(
 
 export const authService = {
   login: (username: string, password: string) => 
-    api.post<LoginResponse>('/auth/login', { username, password }),
+    api.post<LoginResponse>('auth/login', { username, password }),
   
   register: (username: string, email: string, password: string) => 
-    api.post<RegisterResponse>('/auth/register', { username, email, password }),
+    api.post<RegisterResponse>('auth/register', { username, email, password }),
   
   logout: (username: string | null) => 
-    api.post('/auth/logout', null, { params: { username } }),
+    api.post('auth/logout', null, { params: { username } }),
 };
 
 export const clientesService = {
   listar: (identification: string, nombre: string, usuarioId: string | null) => 
-    api.post<Cliente[]>('/clientes/listar', null, { 
+    api.post<Cliente[]>('clientes/listar', null, { 
       params: { identification, nombre, usuarioId } 
     }),
   
   obtener: (clienteId: string) => 
-    api.get<Cliente>(`/clientes/obtener/${clienteId}`),
+    api.get<Cliente>(`clientes/obtener/${clienteId}`),
   
   crear: (data: ClienteCreate) => 
-    api.post('/clientes/crear', data),
+    api.post('clientes/crear', data),
   
   actualizar: (data: ClienteUpdate) => 
-    api.post('/clientes/actualizar', data),
+    api.post('clientes/actualizar', data),
   
   eliminar: (clienteId: string, usuarioId: string | null) => 
-    api.delete(`/clientes/eliminar/${clienteId}`, { params: { usuarioId } }),
+    api.delete(`clientes/eliminar/${clienteId}`, { params: { usuarioId } }),
 };
 
 export const interesesService = {
-  listar: () => api.get<Interes[]>('/intereses/listado'),
+  listar: () => api.get<Interes[]>('intereses/listado'),
 };
 
 export default api;
