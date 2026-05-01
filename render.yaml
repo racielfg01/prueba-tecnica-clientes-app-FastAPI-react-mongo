@@ -8,14 +8,10 @@ services:
     autoDeploy: true
     envVars:
       - key: MONGO_URL
-        value: mongodb://admin:securepassword@mongodb:27017
+        sync: false
       - key: DATABASE_NAME
         value: innovasoft_db
       - key: PORT
         value: 10000
       - key: PYTHONUNBUFFERED
         value: "1"
-  - type: pserv
-    name: innovasoft-mongodb
-    plan: free
-    region: oregon
