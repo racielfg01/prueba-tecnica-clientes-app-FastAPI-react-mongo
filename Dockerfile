@@ -7,7 +7,10 @@ COPY frontend/package*.json ./
 RUN npm install --legacy-peer-deps
 # Copiar código del frontend y construir
 COPY frontend/ ./
+
 RUN npm run build
+
+
 # Etapa 2: Configurar el backend con Python
 FROM python:3.11-slim
 WORKDIR /app

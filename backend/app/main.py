@@ -31,30 +31,34 @@ app.include_router(auth.router)
 app.include_router(clientes.router)
 app.include_router(intereses.router)
 
-@app.get("/")
-async def root():
-    return {"message": "Innovasoft API Local", "status": "running"}
-
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
 
 # Servir archivos estáticos del frontend
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "static")
-if os.path.exists(static_dir):
+
+if os.path.exists(static_dir) and os.path.exists(os.path.join(static_dir, "index.html")):
     app.mount("/assets", StaticFiles(directory=os.path.join(static_dir, "assets")), name="static_assets")
-    
+
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
-        # Si es una ruta de API, no interceptar
         if full_path.startswith("api/"):
             return {"error": "Not found"}
-        # Buscar archivo específico
         file_path = os.path.join(static_dir, full_path)
         if os.path.exists(file_path) and os.path.isfile(file_path):
             return FileResponse(file_path)
-        # Para SPA: devolver index.html
         index_path = os.path.join(static_dir, "index.html")
         if os.path.exists(index_path):
             return FileResponse(index_path)
         return {"error": "index.html not found"}
+else:
+    @app.get("/")
+    async def root():
+        return {"message": "Innovasoft API Local", "status": "running", "note": "frontend not found"}
+
+    @app.get("/{full_path:path}")
+    async def catch_all(full_path: str):
+        if full_path.startswith("api/"):
+            return {"error": "Not found"}
+        return {"message": "Innovasoft API Local", "status": "running", "note": "frontend not built"}
